@@ -4,14 +4,15 @@
 
 #include <iostream>
 #include <vector>
+#include <memory>
 
 class DataChunk{
-    int* buffer;
+    std::unique_ptr<int[]> buffer;
     size_t size;
 
 public:
     DataChunk(size_t s) : size(s){
-        buffer = new int[size];
+        buffer = std::make_unique<int[]>(size);
         std::cout << "Allocated " << size * sizeof(int) / 1024 << " KB" << std::endl;
     }
 
