@@ -17,8 +17,25 @@ std::map<std::string, std::string> parseSettings(const std::string& input){
 
         // Unsafe: no check for missing '=', empty keys or values, 
         // duplicate keys, spaces, or non-numeric values.
+        
+        if (eq == std::string::npos || eq == 0 || eq == pair.length() - 1) {
+            continue; // Skip invalid pairs
+        }
+
         std::string key = pair.substr(0, eq);
         std::string value = pair.substr(eq + 1);
+
+        if (key.find(' ') != std::string::npos || value.find(' ') != std::string::npos) {
+            continue; // Skip pairs with spaces
+        }
+
+        if (value.find_first_not_of("0123456789") != std::string::npos) {
+            continue; // Skip non-numeric values
+        }
+
+        if(result.find(key) != result.end()) {
+            continue; // Skip duplicate keys
+        }
 
         result[key] = value; // silently overwrites
     }
